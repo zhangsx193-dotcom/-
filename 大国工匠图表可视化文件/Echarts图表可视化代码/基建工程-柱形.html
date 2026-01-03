@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>基建工程领域-大国工匠精神品质频次</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <style>
+        html,body{margin:0;height:100%}
+        #main{width:100%;height:100%}
+    </style>
+</head>
+<body>
+<div id="main"></div>
+<script>
+const chart = echarts.init(document.getElementById('main'));
+
+/* ====== 仅替换以下两组数据 ====== */
+const quality = ['创新突破','敬业奉献','精益求精','坚韧不拔','责任担当'];
+const totalScore = [24,18,17,15,11];
+
+const morandiColors = ['#d0b17a','#b6a19e','#a992a2','#8fa3b3','#9fa5a8'];
+
+const option = {
+    title: [{
+        text: '基建工程领域-大国工匠精神品质频次',
+        left: 'center',
+        textStyle: { fontSize: 16, color: '#555' }
+    }],
+    polar: { radius: [30, '80%'] },
+    angleAxis: {
+        max: 30,          // 按最高值 24 向上取整
+        startAngle: 90,
+        axisLine: { lineStyle: { color: '#ccc' }},
+        splitLine: { lineStyle: { color: '#e0e0e0' }}
+    },
+    radiusAxis: {
+        type: 'category',
+        data: quality,
+        z: 10,
+        axisLine: { lineStyle: { color: '#ccc' }},
+        axisLabel: { color: '#555' }
+    },
+    tooltip: {
+        formatter: (p) => `${p.name}: ${p.value} 次`
+    },
+    series: {
+        type: 'bar',
+        data: totalScore.map((v, i) => ({
+            value: v,
+            itemStyle: { color: morandiColors[i] }
+        })),
+        coordinateSystem: 'polar',
+        label: {
+            show: true,
+            position: 'middle',
+            formatter: '{b}\n{c}',
+            color: '#444'
+        }
+    }
+};
+
+chart.setOption(option);
+window.addEventListener('resize', () => chart.resize());
+</script>
+</body>
+</html>

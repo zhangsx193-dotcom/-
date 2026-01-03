@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>基建工程领域-大国工匠精神品质热力图</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <style>
+        html,body{margin:0;height:100%}
+        #main{width:100%;height:100%}
+    </style>
+</head>
+<body>
+<div id="main"></div>
+<script>
+const chart = echarts.init(document.getElementById('main'));
+
+const industries = ['航空制造','核电建设','射电望远镜','海底隧道/桥梁','LNG船舶'];
+const qualities  = ['精度','责任','创新','专注','吃苦','学习','协作','极致'];
+
+const rawScore = {
+    '航空制造':       [71.4,28.2,100.0,4.0,20.1,28.2,20.1,8.1],
+    '核电建设':       [38.1,32.2,14.3,4.0,36.2,4.0,20.1,12.1],
+    '射电望远镜':     [38.1,28.2,14.3,4.0,20.1,4.0,16.1,4.0],
+    '海底隧道/桥梁':  [52.4,40.3,19.0,24.2,32.2,32.2,40.3,4.0],
+    'LNG船舶':        [0.0,32.2,0.0,4.0,8.1,8.1,4.0,8.1]
+};
+
+const data = [];
+for (let i = 0; i < industries.length; i++) {
+    for (let j = 0; j < qualities.length; j++) {
+        data.push([j, i, rawScore[industries[i]][j]]);
+    }
+}
+
+const option = {
+    title: {
+        text: '基建工程领域-大国工匠精神品质热力图',
+        left: 'center',
+        top: 20,
+        textStyle: {
+            fontSize: 18,
+            fontWeight: 'bold',
+            color: '#333'
+        }
+    },
+    backgroundColor: '#fff',
+    grid: { left: '15%', right: '10%', top: '15%', bottom: '15%' },
+    xAxis: {
+        type: 'category',
+        data: qualities,
+        axisLine: { lineStyle: { color: '#ccc' } },
+        axisLabel: { fontSize: 13, color: '#333' }
+    },
+    yAxis: {
+        type: 'category',
+        data: industries,
+        axisLine: { lineStyle: { color: '#ccc' } },
+        axisLabel: { fontSize: 13, color: '#333' }
+    },
+    visualMap: {
+        min: 0,
+        max: 100,
+        show: true,
+        orient: 'horizontal',
+        left: 'center',
+        bottom: '5%',
+        inRange: { color: ['#f7fbff', '#08306b'] },
+        text: ['低', '高'],
+        textStyle: { color: '#333' }
+    },
+    series: [{
+        type: 'heatmap',
+        data: data,
+        label: {
+            show: true,
+            fontSize: 14,
+            color: '#000'
+        },
+        emphasis: {
+            itemStyle: { shadowBlur: 10, shadowColor: 'rgba(0,0,0,.3)' }
+        }
+    }]
+};
+
+chart.setOption(option);
+window.addEventListener('resize', () => chart.resize());
+</script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>能源电力领域-大国工匠精神品质热力图</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <style>
+        html,body{margin:0;height:100%}
+        #main{width:100%;height:100%}
+    </style>
+</head>
+<body>
+<div id="main"></div>
+<script>
+const chart = echarts.init(document.getElementById('main'));
+
+const industries = ['核电维修','特高压带电','核电燃料','电能计量','火电焊接','水电吊装'];
+const qualities  = ['精度','责任','创新','专注','吃苦','学习','协作','极致'];
+
+const raw = {
+    '核电维修': [36.4,47.3,63.6,31.5,18.2,0.0,36.4,0.0],
+    '特高压带电': [18.2,39.4,54.5,7.9,18.2,0.0,36.4,0.0],
+    '核电燃料': [18.2,39.4,54.5,7.9,18.2,0.0,36.4,0.0],
+    '电能计量': [18.2,39.4,100.0,15.8,18.2,71.0,90.9,35.5],
+    '火电焊接': [0.0,7.9,0.0,31.5,0.0,0.0,0.0,0.0],
+    '水电吊装': [63.6,47.3,54.5,39.4,18.2,0.0,36.4,0.0]
+};
+
+const data = [];
+for (let i = 0; i < industries.length; i++) {
+    for (let j = 0; j < qualities.length; j++) {
+        data.push([j, i, raw[industries[i]][j]]);
+    }
+}
+
+const option = {
+    title: {
+        text: '能源电力领域-大国工匠精神品质热力图',
+        left: 'center', top: 20,
+        textStyle: { fontSize: 18, fontWeight: 'bold', color: '#333' }
+    },
+    backgroundColor: '#fff',
+    grid: { left: '15%', right: '10%', top: '15%', bottom: '15%' },
+    xAxis: {
+        type: 'category', data: qualities,
+        axisLine: { lineStyle: { color: '#ccc' } },
+        axisLabel: { fontSize: 13, color: '#333' }
+    },
+    yAxis: {
+        type: 'category', data: industries,
+        axisLine: { lineStyle: { color: '#ccc' } },
+        axisLabel: { fontSize: 13, color: '#333' }
+    },
+    visualMap: {
+        min: 0, max: 100, show: true, orient: 'horizontal',
+        left: 'center', bottom: '5%',
+        inRange: { color: ['#f7fbff', '#08306b'] },
+        text: ['低', '高'], textStyle: { color: '#333' }
+    },
+    series: [{
+        type: 'heatmap', data: data,
+        label: { show: true, fontSize: 14, color: '#000' },
+        emphasis: {
+            itemStyle: { shadowBlur: 10, shadowColor: 'rgba(0,0,0,.3)' }
+        }
+    }]
+};
+
+chart.setOption(option);
+window.addEventListener('resize', () => chart.resize());
+</script>
+</body>
+</html>

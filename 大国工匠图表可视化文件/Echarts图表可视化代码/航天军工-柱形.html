@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>航天军工-大国工匠精神品质频次</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <style>html,body{margin:0;height:100%} #main{width:100%;height:100%}</style>
+</head>
+<body>
+<div id="main"></div>
+<script>
+const chart = echarts.init(document.getElementById('main'));
+fetch('航天军工-柱形.csv').then(r=>r.text()).then(txt=>{
+    const list = txt.trim().split('\n').slice(1).map(l=>l.split(','));
+    const quality = list.map(d=>d[0]);
+    const freq   = list.map(d=>+d[1]);
+    const morandi = ['#a992a2','#8fa3b3','#a9b5a0','#d0b17a','#b6a19e'];
+    const option = {
+        title: [{text:'航天军工-大国工匠精神品质频次',left:'center',textStyle:{fontSize:16,color:'#555'}}],
+        polar:{radius:[30,'80%']},
+        angleAxis:{max:Math.max(...freq)+5,startAngle:90,axisLine:{lineStyle:{color:'#ccc'}},splitLine:{lineStyle:{color:'#e0e0e0'}}},
+        radiusAxis:{type:'category',data:quality,z:10,axisLine:{lineStyle:{color:'#ccc'}},axisLabel:{color:'#555'}},
+        tooltip:{formatter:p=>`${p.name}: ${p.value} 次`},
+        series:{
+            type:'bar',data:freq.map((v,i)=>({value:v,itemStyle:{color:morandi[i]}})),
+            coordinateSystem:'polar',label:{show:true,position:'middle',formatter:'{b}\n{c}',color:'#444'}
+        }
+    };
+    chart.setOption(option);
+});
+window.addEventListener('resize',()=>chart.resize());
+</script>
+</body>
+</html>
